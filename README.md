@@ -12,12 +12,15 @@ This project demonstrates the creation of a simple AI-powered command-line assis
 .
 ├── .env                   # Environment variables (e.g., GEMINI_API_KEY)
 ├── main.py                # Entry point: CLI interface for AI interaction
+├── tests.py               # Unit tests for get_files_info.py
 ├── calculator/            # Legacy calculator module (undergoing refactor)
 │   ├── main.py            # Initial, unrefactored calculator logic
 │   └── tests.py           # Unit tests for calculator functionality
 │   └── pkg/               # Calculator submodules
 │       ├── calculator.py  # Core calculation logic and functions
 │       └── render.py      # Output rendering and formatting utilities
+├── functions/             # Scripts to help the agent analyze files
+│   └── get_files_info.py  # Output file info for working_directory
 ├── README.md              # Project overview and usage instructions
 └── pyproject.toml         # Project metadata and dependencies
 ```
