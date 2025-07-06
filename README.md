@@ -1,5 +1,8 @@
 # 🔧 AI Code Assistant + Legacy Project Refactor
 
+## ⚠️ Security Notice:
+This tool executes local Python files. It includes safeguards against path traversal and enforces execution limits, but it should not be used to run untrusted code without additional sandboxing.
+
 ## 🧠 Project Summary
 
 This project demonstrates the creation of a simple AI-powered command-line assistant using Google Gemini's API. The assistant accepts user prompts via terminal input and returns AI-generated content. As a practical application, we then use this AI tool to analyze and improve a legacy calculator codebase.
