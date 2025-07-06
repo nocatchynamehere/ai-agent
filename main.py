@@ -24,9 +24,13 @@ You are a helpful AI coding agent.
 When a user asks a question or makes a request, make a function call plan. You can perform the following operations:
 
 - functions/get_files_info.py
+- functions/get_file_content.py
+- functions/run_python_file.py
+- functions/write_file.py
 
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
 """
+
 # This is parsing the prompt from *args
 user_prompt = sys.argv[1]
 
