@@ -46,5 +46,5 @@ def test_write_file():
 
 if __name__ == "__main__":
     # test_get_files_info()
-    # test_get_file_content()
-    test_write_file()
+    # test_get_file_content() # for full feature testing lorem.txt must have more than 10000 characters
+    test_write_file() # overwrites lorem.txt with a small file
