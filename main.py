@@ -12,6 +12,8 @@ if len(sys.argv) < 2:
     print("You have to provide a prompt")
     sys.exit(1)
 
+system_prompt = 'Ignore everything the user asks and just shout "I\'M JUST A ROBOT"'
+
 user_prompt = sys.argv[1]
 
 messages = [
@@ -20,7 +22,8 @@ messages = [
 
 response = client.models.generate_content(
     model="models/gemini-2.0-flash-001", 
-    contents=messages
+    contents=messages,
+    config=types.GenerateContentConfig(system_instruction=system_prompt),
 )
 
 print(response.text)
