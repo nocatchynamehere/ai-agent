@@ -1,4 +1,5 @@
 import os
+from google.genai import types
 
 def get_file_content(working_directory, file_path):
     try:
@@ -29,3 +30,27 @@ def get_file_content(working_directory, file_path):
 
     except Exception as e:
         return f'Error: {str(e)}'
+
+# Schema for gemini tooling    
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description=(
+        "Reads the contents of a file located within the working directory. "
+        "Returns up to 10,000 characters of content, with a warning if truncated. "
+        "Rejects access to files outside the allowed working directory."
+    ),
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description=(
+                    "Relative path to the target file, based on the current working directory. "
+                    "Must not be an absolute path. "
+                    "The file must exist and be a regular file."
+                ),
+            ),
+        },
+        required=["file_path"]
+    ),
+)

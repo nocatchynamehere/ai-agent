@@ -37,16 +37,25 @@ def get_files_info(working_directory, directory=None):
     
     except Exception as e:
         return f'Error: {str(e)}'
-    
+
+# Schema for gemini tooling        
 schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
-    description="Lists files in the specified directory along with their sizes, constrained to the working directory.",
+    description=(
+        "Lists the contents of a directory, including each item's size in bytes and whether it is a directory. "
+        "Only allows access to directories within the predefined working directory. "
+        "Returns an error if the path is outside the allowed scope or is not a valid directory."
+    ),
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
             "directory": types.Schema(
                 type=types.Type.STRING,
-                description="The directory to list files from, relative to the working directory. If not provided, lists files in the working directory itself.",
+                description=(
+                    "Optional. Relative path to the subdirectory to inspect, based on the working directory root. "
+                    "If not provided, defaults to listing the root of the working directory. "
+                    "Must not be an absolute path or attempt to escape the working directory."
+                ),
             ),
         },
     ),
