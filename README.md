@@ -1,4 +1,4 @@
-# 🔧 AI Code Assistant + Legacy Project Refactor
+# 🤖 AI-Powered Code Assistant & Legacy Refactor Project
 
 ## ⚠️ **Security Notice:**  
 This tool includes guardrails such as path whitelisting and a 30-second execution timeout. However, it does execute local Python files and **must not** be used with untrusted or user-submitted code unless further sandboxing (e.g., containers, firejailing) is added.
@@ -28,6 +28,7 @@ The result is a powerful example of AI-assisted software engineering — blendin
 │   │   └── render.py        # Output rendering and formatting utilities
 │   └── tests.py             # Unit tests for calculator functionality
 ├── functions/               # Holds reusable utility logic (file I/O, execution control)
+│   ├── call_function.py     # Executes functions for the agent
 │   ├── get_file_content.py  # Gets file statistics
 │   ├── get_files_info.py    # Reads file and truncates
 │   ├── write_file.py        # Writes to file
@@ -42,7 +43,7 @@ The result is a powerful example of AI-assisted software engineering — blendin
 
 ---
 
-## 🚀 Part 1: AI Assistant – `agent.py`
+## 🚀 Part 1: AI Assistant – `main.py`
 
 This script sets up a lightweight terminal-based assistant using the Gemini 2.0 Flash model.
 
@@ -60,7 +61,10 @@ This script sets up a lightweight terminal-based assistant using the Gemini 2.0 
 ### 🧪 Usage
 ```bash
 uv run agent.py "What is the time complexity of bubble sort?"
+# Will give a flat out response or time out
+
 uv run agent.py "Improve the following Python function..." --verbose
+# Will include information on what the AI-agent is doing
 ```
 
 ---
@@ -70,7 +74,7 @@ uv run agent.py "Improve the following Python function..." --verbose
 The `calculator/main.py` file contains intentionally poor or incomplete code. We'll use the AI agent to:
 
 1. Review the original code  
-2. Identify and correct logic errors, poor design, or lack of features  
+2. Identify and correct logic bugs, poor structure, and missing features
 3. Create a cleaner, modular, and well-documented version  
 
 ---
@@ -86,6 +90,7 @@ The `calculator/main.py` file contains intentionally poor or incomplete code. We
 
 ## 🔐 .env File Example
 
+This file is required - main.py will exit if GEMINI_API_KEY is missing.
 ```
 GEMINI_API_KEY=your_api_key_here
 ```
@@ -113,7 +118,9 @@ google-generativeai
 - Add support for code streaming or multiline responses  
 - Interactive loop mode (like a chatbot shell)  
 - Load code directly into the AI prompt from file  
-- Add logging or output-to-file options  
+- Add logging or output-to-file options
+- Allow the AI to summarize changes it made after tool use
+- Support writing diffs instead of full overwrites  
 
 ---
 

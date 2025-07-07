@@ -1,6 +1,6 @@
 # 🔐 Security Policy
 
-## 📦 Project: AI Code Assistant + Legacy Code Refactor
+## 📦 Project Scope: AI Code Assistant & Legacy Refactor
 
 This project allows users to execute local Python files via a command-line AI assistant. To ensure safety, guardrails are in place to protect the executing environment from unintended or malicious behavior. However, **this project is not designed for running untrusted user input without additional sandboxing.**
 
@@ -35,11 +35,7 @@ This project allows users to execute local Python files via a command-line AI as
 
 ## ⚠️ Known Limitations
 
-This project **executes Python code**. Even with the above protections, it is inherently unsafe to run code from unknown or untrusted users unless sandboxed using:
-
-- Docker or other containerization tools
-- `firejail`, AppArmor, or similar process confinement
-- Virtual machine isolation
+Even with guardrails, executing arbitrary Python code is inherently dangerous. This project does not include sandboxing or process isolation out-of-the-box.
 
 ---
 
@@ -56,7 +52,7 @@ This project **executes Python code**. Even with the above protections, it is in
 
 ## 📄 Reporting Vulnerabilities
 
-If you discover a vulnerability or potential exploit path in this project, please open an issue with the tag `security` or contact the repository maintainer directly.
+If you discover a security issue or exploit path, please open a GitHub issue using the security label or contact the maintainer privately.
 
 ---
 
