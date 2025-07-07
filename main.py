@@ -83,7 +83,7 @@ while iteration < max_iterations and not done:
                 function_call_found = True
                 if verbose:
                     print(f' - Calling function: {part.function_call.name}')
-                call_response = call_function(part.function_call, verbose=verbose)
+                call_response = call_function(part.function_call, verbose)
                 messages.append(call_response)  # Add tool result to message history
                 break   # One tool call per turn (for now)
 
