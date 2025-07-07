@@ -38,10 +38,6 @@ verbose = "--verbose" in sys.argv
 # This is parsing the prompt from *args
 user_prompt = sys.argv[1]
 
-messages = [
-    types.Content(role="user", parts=[types.Part(text=user_prompt)]),
-]
-
 # Listing the available functions for execution
 available_functions = types.Tool(
     function_declarations=[
@@ -52,44 +48,60 @@ available_functions = types.Tool(
     ]
 )
 
-# Collecting the response from the AI-agent and printing
-response = client.models.generate_content(
-    model="models/gemini-2.0-flash-001", 
-    contents=messages,
-    config=types.GenerateContentConfig(
-        tools=[available_functions],
-        system_instruction=system_prompt
-        ),
-)
+messages = [
+    types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+]
 
-# Check for a function call or text response and call function
-function_call_found = False
-call_response = None
+max_iterations = 20
+iteration = 0
+done = False
 
-for part in response.candidates[0].content.parts:
-    if hasattr(part, "function_call") and part.function_call:
-        function_call_found = True
-        call_response = call_function(part.function_call, verbose)
-        break
+while iteration < max_iterations and not done:
+    iteration += 1
 
-# Validate and print the result of the function call
-if function_call_found:
-    if call_response and call_response.parts and call_response.parts[0].function_response:
-        func_result = call_response.parts[0].function_response.response
-        if func_result is not None:
-            if verbose:
-                print(f' -> {func_result}')
-        else:
-            raise RuntimeError("Fatal: function_response.response is None")
-    else:
-        raise RuntimeError("Fatal: Malformed function response from tool")
-else:
-    # Fallback: just print the text if there's no function call
-    if response.text:
-        print(response.text)
-    else:
-        print("[No text response or function call returned]")
+    # Collecting the response from the AI-agent and printing
+    response = client.models.generate_content(
+        model="models/gemini-2.0-flash-001", 
+        contents=messages,
+        config=types.GenerateContentConfig(
+            tools=[available_functions],
+            system_instruction=system_prompt
+            ),
+    )
+
+    # Check for a function call or text response and call function
+    function_call_found = False
+    call_response = None
+
+    # Loop through each candidate response
+    for candidate in response.candidates:
+        # Compile full response history
+        messages.append(candidate.content)
     
+        for part in candidate.content.parts:
+            if hasattr(part, "function_call") and part.function_call:
+                function_call_found = True
+                if verbose:
+                    print(f' - Calling function: {part.function_call.name}')
+                call_response = call_function(part.function_call, verbose=verbose)
+                messages.append(call_response)  # Add tool result to message history
+                break   # One tool call per turn (for now)
+
+        if function_call_found:
+            break   # No need to look at more candidates
+
+    if not function_call_found:
+        # No more tool calls - model is finished
+        print('\nFinal response:')
+        if response.text:
+            print(response.text)
+        else:
+            # If no .text, try printing the content of the first candidate
+            content = response.candidates[0].content
+            for part in content.parts:
+                if hasattr(part, "text"):
+                    print(part.text)
+        break   # Exit the loop    
 
 # --verbose tag handling
 if verbose:
