@@ -82,6 +82,9 @@ while iteration < max_iterations and not done:
             ),
     )
 
+    total_prompt_tokens += response.usage_metadata.prompt_token_count
+    total_response_tokens += response.usage_metadata.candidates_token_count
+
     # Check for a function call or text response and call function
     function_call_found = False
     call_response = None
@@ -119,5 +122,6 @@ while iteration < max_iterations and not done:
 # --verbose tag handling
 if verbose:
     print(f"User prompt: {user_prompt}")
-    print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-    print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+    print(f"\nTotal prompt tokens: {total_prompt_tokens}")
+    print(f"Total response tokens: {total_response_tokens}")
+    print(f"Total tokens used: {total_prompt_tokens + total_response_tokens}")
