@@ -65,6 +65,8 @@ messages = [
 
 max_iterations = 20
 iteration = 0
+total_prompt_tokens = 0
+total_response_tokens = 0
 done = False
 
 while iteration < max_iterations and not done:
